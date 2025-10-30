@@ -63,7 +63,7 @@ module.exports = {
         WHERE usuario_id = ?
         GROUP BY MONTH(data)
         ORDER BY mes
-      `, [usuarioId]);
+      `, [usuarioId]);;
 
       const entradas = Array(12).fill(0);
       const saidas = Array(12).fill(0);
