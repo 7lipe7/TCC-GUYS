@@ -43,6 +43,10 @@ module.exports = {
         }
       }
 
+      const isDisponivelValor = (req.body.is_disponivel !== undefined)
+        ? (Number(req.body.is_disponivel) ? 1 : 0)
+        : 1;
+
       const dadosPrato = {
         categoria,
         nome_prato,
@@ -51,7 +55,7 @@ module.exports = {
         preco: temTamanhos ? null : precoNum, // Se tem tamanhos, preço = null
         usuario_id: usuarioId,
         destaque: req.body.destaque ? 1 : 0,
-        is_disponivel: req.body.is_disponivel ? 1 : 0,
+        is_disponivel: isDisponivelValor,
         arquivado: req.body.arquivado ? 1 : 0,
         atualizado_por: usuarioId
       };
@@ -123,6 +127,13 @@ module.exports = {
         destaque: req.body.destaque ? 1 : 0,
         atualizado_por: usuarioId
       };
+
+      if ('is_disponivel' in req.body) {
+        dados.is_disponivel = Number(req.body.is_disponivel) ? 1 : 0;
+      }
+      if ('arquivado' in req.body) {
+        dados.arquivado = Number(req.body.arquivado) ? 1 : 0;
+      }
 
       if (req.file) dados.imagem = req.file.filename;
       if (precoNum !== undefined && !Number.isNaN(precoNum)) dados.preco = precoNum;
@@ -218,7 +229,16 @@ module.exports = {
         return res.status(404).send('Restaurante não encontrado.');
       }
 
-      const itens = await Menu.getPublicByUsuario(usuarioId);
+      console.log('publicoPorUsuario - carregando cardapio para usuarioId:', usuarioId, 'dono:', !!dono && dono.nome_empresa);
+      let itens;
+      try {
+        itens = await Menu.getPublicByUsuario(usuarioId);
+      } catch (errGet) {
+        console.error('Erro na consulta Menu.getPublicByUsuario:', errGet);
+        return res.status(500).send('Erro ao carregar itens do cardápio.');
+      }
+
+      console.log('publicoPorUsuario - itensLength:', Array.isArray(itens) ? itens.length : typeof itens);
       return res.render('vendas/cardapio_publico', {
         itens,
         empresaNome: dono.nome_empresa
