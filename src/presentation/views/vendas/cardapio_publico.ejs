@@ -102,45 +102,26 @@
                   <p class="desc muted">Sem descrição.</p>
                 <% } %>
 
->>>>>>> Stashed changes
-                  <div class="card-footer">
-                    <strong class="preco">R$ <%= Number(i.preco).toFixed(2).replace('.', ',') %></strong>
-                    <button
-                      type="button"
-                      class="btn adicionar-carrinho"
-                      data-produto-id="<%= i.id %>"                      <!-- menu.id -->
-                      data-id="<%= i.id %>"
-                      data-preco="<%= Number(i.preco) %>"
-                      data-nome ="<%= i.nome_prato %>"
-                      data-img  ="<%= i.imagem ? ('/uploads/' + i.imagem) : '' %>"
-                      data-endpoint-adicionar="/carrinho/adicionar"
-                      aria-label="Adicionar <%= i.nome_prato %> ao carrinho">
-                      Adicionar
-                    </button>
-                  </div>
+                <div class="card-footer">
+                  <strong class="preco">R$ <%= Number(i.preco).toFixed(2).replace('.', ',') %></strong>
+
+                  <button 
+                    type="button"
+                    class="btn ver-item"
+                    data-id="<%= i.id %>"
+                    aria-label="Ver detalhes de <%= i.nome_prato %>">
+                      Detalhes
+                  </button>
                 </div>
               </div>
-            <% }) %>
-          </div>
-        <% } %>
-      </div>
-    </main>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
 
-    <aside class="col-carrinho" id="cart"
-           data-endpoint-listar="/carrinho"
-           data-endpoint-remover="/carrinho/remover"
-           data-endpoint-atualizar="/carrinho/atualizar"
-           data-endpoint-finalizar="/carrinho/finalizar">
-      <header class="cart-header" style="display:flex; align-items:center; gap:10px;">
-        <h2 style="margin:0;">Meu Pedido</h2>
-        <button type="button" class="cart-close" id="closeCart" aria-label="Fechar">✕</button>
-      </header>
-
-      <div class="tabs" style="margin-top:8px;">
-        <button class="tab active"  type="button" data-mode="dine">Comer no local</button>
-        <button class="tab"         type="button" data-mode="pickup">Retirar</button>
-        <button class="tab"         type="button" data-mode="delivery">Entrega</button>
-      </div>
+    </div>
+  </main>
+</div>
 
       <section id="carrinho-container" class="cart-list"></section>
 
@@ -220,9 +201,10 @@
       </section>
     </div>
   </div>
-  <!-- ========== /MODAL LOGIN/CADASTRO ========== -->
-<<<<<<< Updated upstream
-=======
+</div>
+
+<!-- OVERLAY -->
+<div id="cartOverlay" class="cart-overlay"></div>
 
 <!-- SCRIPTS (APENAS UMA VEZ E NO FINAL DO BODY!) -->
 <script nonce="<%= cspNonce %>" src="/cardapio/cardapio.js"></script>
