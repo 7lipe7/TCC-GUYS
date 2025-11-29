@@ -1,3 +1,4 @@
+/* ======== BASE ======== */
 body {
   margin:0;
   font-family: 'Segoe UI', sans-serif;
@@ -8,22 +9,53 @@ body {
 .layout {
   display:flex;
   min-height:100vh;
+  transition:0.3s ease;
 }
 
-.conteudo {
-  flex:1;
-  padding:20px;
+.layout.blur {
+  filter: blur(3px);
+  pointer-events:none;
 }
 
-.sidebar {
-  width:350px;
+/* ======== SIDEBAR (CARRINHO) ======== */
+
+.cart {
+  position: fixed;
+  top: 0;
+  right: -400px; /* escondido inicialmente */
+  width: 350px;
+  height: 100vh;
   background:#fff;
   border-left:1px solid #e5e7eb;
   padding:20px;
   display:flex;
   flex-direction:column;
-  box-shadow:-2px 0 8px rgba(0,0,0,.05);
+  box-shadow:-2px 0 8px rgba(0,0,0,.15);
+  transition:0.35s ease;
+  z-index:9999;
 }
+
+.cart.open {
+  right: 0; /* aparece */
+}
+
+/* BACKDROP */
+.cart-backdrop {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.55);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s ease;
+  z-index:9998;
+}
+
+.cart-backdrop.show {
+  opacity:1;
+  visibility:visible;
+}
+
+/* ======== CONTEÚDO DO CARRINHO ======== */
 
 .sidebar header {
   margin-bottom:20px;
@@ -31,6 +63,7 @@ body {
 .sidebar header h2 {
   margin:0 0 12px;
 }
+
 .tabs {
   display:flex;
   gap:6px;
@@ -77,8 +110,11 @@ body {
 .item .info { font-size:14px; }
 .item .nome { font-weight:600; display:block; }
 .item .preco-unit { color:#6b7280; font-size:12px; }
+
 .item .acoes { display:flex; align-items:center; gap:6px; }
 .item input { width:40px; text-align:center; }
+
+/* ======== RESUMO ======== */
 
 .resumo {
   border-top:1px solid #e5e7eb;
@@ -90,6 +126,8 @@ body {
   margin-bottom:8px;
 }
 .resumo .linha.total { font-size:16px; font-weight:600; }
+
+/* ======== PAGAMENTOS ======== */
 
 .pagamentos {
   margin:16px 0;
@@ -110,6 +148,7 @@ body {
   border-color:#1abc9c;
 }
 
+/* ======== FOOTER ======== */
 footer {
   display:flex; flex-direction:column; gap:10px;
 }

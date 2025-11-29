@@ -8,20 +8,19 @@
 </head>
 <body>
   <div class="layout-cardapio">
+
     <main class="col-catalogo">
       <div class="container">
+
+        <!-- TOPO -->
         <header class="topbar">
           <h1><%= empresaNome %></h1>
           <div style="display:flex; gap:10px; align-items:center;">
             <a href="/restaurantes" class="btn-ghost">Trocar restaurante</a>
+
             <button type="button" id="btnToggleCart" class="btn-carrinho" aria-label="Ver carrinho" data-endpoint-listar="/carrinho">
               <span class="icon" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M6 6h15l-2 8H8L6 6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                  <path d="M6 6 5 3H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                  <circle cx="9.5" cy="18.5" r="1.6" fill="currentColor"/>
-                  <circle cx="17.5" cy="18.5" r="1.6" fill="currentColor"/>
-                </svg>
+                <!-- svg -->
               </span>
               <span class="label">Carrinho</span>
               <span id="badge-carrinho" class="badge-carrinho">0</span>
@@ -29,100 +28,54 @@
           </div>
         </header>
 
-<<<<<<< Updated upstream
-        <%
-          const temCategorias = (typeof categorias !== 'undefined' && Array.isArray(categorias) && categorias.length > 0);
-          const listaChips = temCategorias ? categorias : ['Todos','Bebidas','Hamburguer','Salada','Apimentados','Doces'];
-        %>
-
-        <nav class="filtros" aria-label="Categorias do cardápio">
-          <% listaChips.forEach(function(c, idx){ %>
-            <button class="chip <%= idx === 0 ? 'is-active' : '' %>" type="button" data-filter="<%= c %>"><%= c %></button>
-          <% }) %>
-          <button class="btn-primary" type="button" id="btnVerTudo">Ver tudo</button>
-        </nav>
-
+        <!-- LISTA DE ITENS -->
         <% if (!itens || !itens.length) { %>
           <p class="vazio">Este restaurante ainda não tem itens no cardápio.</p>
         <% } else { %>
           <div class="grid-cards">
             <% itens.forEach(function(i){ %>
               <div class="card" data-cat="<%= i.categoria || 'Outros' %>">
-                <% if (i.desconto) { %>
-                  <span class="badge"><%= i.desconto %>%</span>
-                <% } %>
-                <% if (typeof i.avaliacao !== 'undefined' && i.avaliacao !== null) { %>
+                <% if (i.desconto) { %><span class="badge"><%= i.desconto %>%</span><% } %>
+                <% if (i.avaliacao !== undefined && i.avaliacao !== null) { %>
                   <span class="price-badge"><%= Number(i.avaliacao).toFixed(1) %> ★</span>
                 <% } %>
 
                 <% if (i.imagem) { %>
-                  <img src="/uploads/<%= i.imagem %>" alt="<%= i.nome_prato || 'Item do cardápio' %>">
+                  <img src="/uploads/<%= i.imagem %>" alt="<%= i.nome_prato %>">
                 <% } else { %>
                   <div class="img-placeholder" aria-label="Sem imagem"></div>
                 <% } %>
 
                 <div class="card-body">
                   <h3 class="titulo"><%= i.nome_prato %></h3>
-
                   <% if (i.descricao) { %>
                     <p class="desc"><%= i.descricao %></p>
                   <% } else { %>
                     <p class="desc muted">Sem descrição.</p>
                   <% } %>
 
-=======
-      <!-- LISTA DE ITENS -->
-      <% if (!itens || !itens.length) { %>
-        <p class="vazio">Este restaurante ainda não tem itens no cardápio.</p>
-      <% } else { %>
-        <div class="grid-cards">
-          <% itens.forEach(function(i){ %>
-            <div class="card" data-cat="<%= i.categoria || 'Outros' %>">
+                  <div class="card-footer">
+                    <strong class="preco">R$ <%= Number(i.preco).toFixed(2).replace('.', ',') %></strong>
 
-              <% if (i.desconto) { %>
-                <span class="badge"><%= i.desconto %>%</span>
-              <% } %>
-
-              <% if (i.avaliacao !== undefined && i.avaliacao !== null) { %>
-                <span class="price-badge"><%= Number(i.avaliacao).toFixed(1) %> ★</span>
-              <% } %>
-
-              <% if (i.imagem) { %>
-                <img src="/uploads/<%= i.imagem %>" alt="<%= i.nome_prato %>">
-              <% } else { %>
-                <div class="img-placeholder" aria-label="Sem imagem"></div>
-              <% } %>
-
-              <div class="card-body">
-                <h3 class="titulo"><%= i.nome_prato %></h3>
-
-                <% if (i.descricao) { %>
-                  <p class="desc"><%= i.descricao %></p>
-                <% } else { %>
-                  <p class="desc muted">Sem descrição.</p>
-                <% } %>
-
-                <div class="card-footer">
-                  <strong class="preco">R$ <%= Number(i.preco).toFixed(2).replace('.', ',') %></strong>
-
-                  <button 
-                    type="button"
-                    class="btn ver-item"
-                    data-id="<%= i.id %>"
-                    aria-label="Ver detalhes de <%= i.nome_prato %>">
-                      Detalhes
-                  </button>
+                    <!-- botão CORRETO -->
+                    <button 
+                      type="button"
+                      class="btn adicionar-carrinho"
+                      data-id="<%= i.id %>">
+                      Adicionar ao carrinho
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          <% }) %>
-        </div>
-      <% } %>
+            <% }) %>
+          </div>
+        <% } %>
 
-    </div>
-  </main>
-</div>
+      </div>
+    </main>
 
+    <!-- CARRINHO (sidebar) -->
+    <aside class="cart">
       <section id="carrinho-container" class="cart-list"></section>
 
       <section class="resumo">
@@ -135,9 +88,9 @@
         <h4>Pagamentos</h4>
         <div class="opcoes">
           <button class="pay active" type="button" data-pay="cash">Dinheiro</button>
-          <button class="pay"        type="button" data-pay="debit">Débito</button>
-          <button class="pay"        type="button" data-pay="credit">Crédito</button>
-          <button class="pay"        type="button" data-pay="ewallet">Pix</button>
+          <button class="pay" type="button" data-pay="debit">Débito</button>
+          <button class="pay" type="button" data-pay="credit">Crédito</button>
+          <button class="pay" type="button" data-pay="ewallet">Pix</button>
         </div>
       </section>
 
@@ -147,10 +100,11 @@
       </footer>
     </aside>
 
-    <div class="cart-backdrop" id="cartBackdrop"></div>
+    <div id="cartBackdrop" class="cart-backdrop"></div>
+
   </div>
 
-  <!-- ========== MODAL LOGIN/CADASTRO DE CLIENTE ========== -->
+  <!-- MODAL LOGIN -->
   <div id="authModal" class="auth-modal" aria-hidden="true">
     <div class="auth-backdrop" data-close-auth></div>
     <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
@@ -167,14 +121,8 @@
       <section id="pane-login" class="auth-pane is-active" role="tabpanel" aria-labelledby="tab-login">
         <form id="formLogin" class="auth-form" autocomplete="on" data-endpoint-login="/cliente/login">
           <input type="hidden" name="next" value="/checkout" />
-          <label class="auth-field">
-            <span>Email</span>
-            <input type="email" name="email" required placeholder="voce@email.com" />
-          </label>
-          <label class="auth-field">
-            <span>Senha</span>
-            <input type="password" name="senha" required placeholder="Sua senha" minlength="4" />
-          </label>
+          <label class="auth-field"><span>Email</span><input type="email" name="email" required/></label>
+          <label class="auth-field"><span>Senha</span><input type="password" name="senha" required minlength="4"/></label>
           <button class="auth-submit" type="submit">Entrar</button>
           <p class="auth-feedback" id="loginFeedback" aria-live="polite"></p>
         </form>
@@ -183,33 +131,17 @@
       <section id="pane-cadastro" class="auth-pane" role="tabpanel" aria-labelledby="tab-cadastro" hidden>
         <form id="formCadastro" class="auth-form" autocomplete="on" data-endpoint-cadastro="/cliente/cadastrar">
           <input type="hidden" name="next" value="/checkout" />
-          <label class="auth-field">
-            <span>Nome</span>
-            <input type="text" name="nome" required placeholder="Seu nome" />
-          </label>
-          <label class="auth-field">
-            <span>Email</span>
-            <input type="email" name="email" required placeholder="voce@email.com" />
-          </label>
-          <label class="auth-field">
-            <span>Senha</span>
-            <input type="password" name="senha" required placeholder="Crie uma senha" minlength="4" />
-          </label>
+          <label class="auth-field"><span>Nome</span><input type="text" name="nome" required/></label>
+          <label class="auth-field"><span>Email</span><input type="email" name="email" required/></label>
+          <label class="auth-field"><span>Senha</span><input type="password" name="senha" required minlength="4"/></label>
           <button class="auth-submit" type="submit">Criar conta</button>
           <p class="auth-feedback" id="cadastroFeedback" aria-live="polite"></p>
         </form>
       </section>
     </div>
   </div>
-</div>
 
-<!-- OVERLAY -->
-<div id="cartOverlay" class="cart-overlay"></div>
-
-<!-- SCRIPTS (APENAS UMA VEZ E NO FINAL DO BODY!) -->
-<script nonce="<%= cspNonce %>" src="/cardapio/cardapio.js"></script>
->>>>>>> Stashed changes
-
+  <!-- SCRIPTS -->
   <script nonce="<%= cspNonce %>" src="/cardapio/cardapio.js"></script>
 </body>
 </html>
